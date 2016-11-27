@@ -1,5 +1,4 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
 var ConfirmBattle = require('../components/ConfirmBattle');
 var githubHelpers = require('../utils/githubHelpers');
 
@@ -10,35 +9,35 @@ var ConfirmBattleContainer = React.createClass({
   getInitialState: function () {
     return {
       isLoading: true,
-      playerInfo: []
+      playersInfo: [],
     }
   },
   componentDidMount: function () {
     var query = this.props.location.query;
-    githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo]).then(function(players) {
-      this.setState({
-        isLoading: false,
-        playerInfo: [players[0], players[1]]
-      })
-    }.bind(this));
+    githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo])
+      .then(function (players) {
+        this.setState({
+          isLoading: false,
+          playersInfo: [players[0], players[1]]
+        })
+      }.bind(this))
   },
   handleInitiateBattle: function () {
     this.context.router.push({
       pathname: '/results',
       state: {
-        playerInfo: this.state.playerInfo
+        playersInfo: this.state.playersInfo
       }
     })
   },
-  render: function() {
+  render: function () {
     return (
       <ConfirmBattle
         isLoading={this.state.isLoading}
-        playersInfo={this.state.playerInfo}
-        onInitiateBattle={this.handleInitiateBattle}/>
-    );
+        onInitiateBattle={this.handleInitiateBattle}
+        playersInfo={this.state.playersInfo} />
+    )
   }
-
 });
 
 module.exports = ConfirmBattleContainer;
